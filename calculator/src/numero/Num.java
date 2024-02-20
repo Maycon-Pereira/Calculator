@@ -12,9 +12,11 @@ public class Num {
 	public String getOperacao() {
 		return this.operacao;
 	}
+
 	public void setOperacao(String operacao) {
 		this.operacao = operacao;
 	}
+
 	public void setValor(int valor) {
 		this.valor = valor;
 	}
