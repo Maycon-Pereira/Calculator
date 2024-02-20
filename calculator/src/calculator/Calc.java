@@ -7,68 +7,63 @@ import numero.Num;
 public class Calc {
 
 	public static void main(String[] args) {
-
 		Scanner scan = new Scanner(System.in);
 
-		Num operacao = new Num();
 		Num n1 = new Num();
 		Num n2 = new Num();
 		Num res = new Num();
-
+		Num nomeOperacao = new Num();
 		String opc = "s";
-		String nomeOperacao = "";
 
-		while (opc.equals("s") || opc.equals("S")) {
-			System.out.printf("Calculadora Mágica %nOnde você pode fazer todas operações simples:%n");
+		while (opc.equalsIgnoreCase("s")) {
+			System.out.println("Calculadora Mágica");
+			System.out.println("Onde você pode fazer todas operações simples:");
 
-			boolean operacaoValida = false;
+			try {
+				System.out.print("Qual é a operação desejada?\nDigite:  ( / ) , ( * ) , ( - ) ou ( + )\n");
+				nomeOperacao.setOperacao(scan.next());
 
-			while (!operacaoValida) {
-
-				System.out.printf("Qual é a operação desejada?%n");
-				System.out.printf("digite:  ( / ) , ( * ) , ( - ) ou ( + )%n");
-				operacao.setOperacao(scan.next());
-
-				if (operacao.getOperacao().equals("/") || operacao.getOperacao().equals("*")
-						|| operacao.getOperacao().equals("-") || operacao.getOperacao().equals("+")) {
-					operacaoValida = true;
-					
-					System.out.printf("%nDigite o valor 1: ");
-					n1.setValor(scan.nextInt());
-					System.out.printf("%nDigite o valor 2: ");
-					n2.setValor(scan.nextInt());
-
-					if (operacao.getOperacao().equals("/")) {
-						res.setValor(n1.getValor() / n2.getValor());
-						nomeOperacao = "Divisão";
-
-					} else if (operacao.getOperacao().equals("*")) {
-						res.setValor(n1.getValor() * n2.getValor());
-						nomeOperacao = "Multiplicação";
-						
-					} else if (operacao.getOperacao().equals("-")) {
-						res.setValor(n1.getValor() - n2.getValor());
-						nomeOperacao = "Subtração";
-						
-					} else if (operacao.getOperacao().equals("+")) {
-						res.setValor(n1.getValor() + n2.getValor());
-						nomeOperacao = "Soma";
-					}
-					
-					System.out.printf("%nA %s de %d com %d e igual a ( %d ) %n%n", nomeOperacao, n1.getValor(), n2.getValor(), res.getValor());
-					System.out.printf("%nDeseja fazer OUTRA operação?%nDigite ( s ) ou ( S )");
-					opc = scan.next();
-					System.out.printf("%n%n%n");
-				} else {
-					System.out.println("--------------------------");
-					System.out.printf("%nOPERAÇÃO INVÁLIDA!!%n%n");
-					System.out.println("--------------------------");
+				if (!nomeOperacao.getOperacao().matches("[/*+-]")) {
+					throw new IllegalArgumentException("Operação inválida!");
 				}
+
+				System.out.print("Digite o valor 1: ");
+				n1.setValor(scan.nextInt());
+
+				System.out.print("Digite o valor 2: ");
+				n2.setValor(scan.nextInt());
+
+				switch (nomeOperacao.getOperacao()) {
+				case "/":
+					if (n2.getValor() == 0) {
+						throw new ArithmeticException("Divisão por zero!");
+					}
+					res.setValor(n1.getValor() / n2.getValor());
+					nomeOperacao.setOperacao("Divisão");
+					break;
+				case "*":
+					res.setValor(n1.getValor() * n2.getValor());
+					nomeOperacao.setOperacao("Multiplicação");
+					break;
+				case "-":
+					res.setValor(n1.getValor() - n2.getValor());
+					nomeOperacao.setOperacao("Subtração");
+					break;
+				case "+":
+					res.setValor(n1.getValor() + n2.getValor());
+					nomeOperacao.setOperacao("Soma");
+					break;
+				}
+
+				System.out.printf("A %s de %d com %d é igual a %d\n", nomeOperacao.getOperacao(), n1.getValor(),
+						n2.getValor(), res.getValor());
+			} catch (Exception e) {
+				System.out.println("Erro: " + e.getMessage());
 			}
 
-			
-			
+			System.out.print("\nDeseja fazer OUTRA operação?\nDigite ( s ) ou ( S ): ");
+			opc = scan.next();
+			System.out.println();
 		}
 	}
-
 }
